@@ -1,7 +1,7 @@
-import { Esc } from './../utils/constants.js'
+import { Esc } from '../utils/constants.js'
 import { useEffect } from "react"
 
-function ImagesPopup(props) {
+function ImagePopup(props) {
 
   useEffect(() => {
     if (!props.isOpen) return;
@@ -31,4 +31,4 @@ function ImagesPopup(props) {
   )
 }
 
-export default ImagesPopup
+export default ImagePopup

@@ -2,7 +2,7 @@ import Header from './../components/Header.js';
 import Main from './../components/Main.js';
 import Footer from './../components/Footer.js'
 import PopupWithForm from './PopupWithForm.js'
-import ImagesPopup from './ImagesPopup.js'
+import ImagePopup from './ImagePopup.js'
 import { useState } from 'react';
 
 
@@ -104,7 +104,7 @@ function App() {
           </>
         }
       />
-      <ImagesPopup card={selectedCard} onClose={closeAllPopup} isOpen={isPhotoPopupOpen} closeOver={escClose} />
+      <ImagePopup card={selectedCard} onClose={closeAllPopup} isOpen={isPhotoPopupOpen} closeOver={escClose} />
     </div >
   );
 }
