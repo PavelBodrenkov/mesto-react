@@ -3,20 +3,22 @@ import Main from './../components/Main.js';
 import Footer from './../components/Footer.js'
 import PopupWithForm from './PopupWithForm.js'
 import ImagesPopup from './ImagesPopup.js'
-// import Card from './Card.js'
-import {useState, useEffect} from 'react';
+import {useState} from 'react';
 
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false)
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false)
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false)
-  const [selectedCard, setSelectedCard] = useState(false)
+  const [isPhotoPopupOpen, setIsPhotoPopupOpen] = useState(false)
+  const [selectedCard, setSelectedCard] = useState({})
 
 
-function handleCardClick () {
-  setSelectedCard(!selectedCard)
-}
+  function handleCardClick (card) {
+    setIsPhotoPopupOpen(!isPhotoPopupOpen)
+    setSelectedCard(card)
+  }
+
 
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(!isEditAvatarPopupOpen)
@@ -34,7 +36,7 @@ function handleCardClick () {
     setIsEditProfilePopupOpen(false)
     setIsEditAvatarPopupOpen(false)
     setIsAddPlacePopupOpen(false)
-    setSelectedCard(false)
+    setIsPhotoPopupOpen(false)
   }
 
   return (
@@ -93,7 +95,7 @@ function handleCardClick () {
       }
       />
      
-      <ImagesPopup  card={selectedCard} onClose={closeAllPopup}/>
+      <ImagesPopup  card={selectedCard} onClose={closeAllPopup} isOpen={isPhotoPopupOpen} />
     </div >
   );
 }

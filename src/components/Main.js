@@ -9,27 +9,17 @@ function Main (props) {
     const [userDescription, setUserDescription] = useState()
     const [cards, setCards] = useState([])
 
-    useEffect(() => {
-      api.getInitialProfile()
-        .then((respons) => {
-            setUserAvatar(respons.avatar)
-            setUserName(respons.name)
-            setUserDescription(respons.about)
-        })
-    }, [])
-
-    useEffect(() => {
-      api.getInitialCards()
-        .then((res) => {
-          setCards(res)
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-    }, [])
-
     
 
+    useEffect(() => {
+      Promise.all([api.getInitialProfile(), api.getInitialCards()])
+       .then((respons) => {
+          setUserAvatar(respons[0].avatar)
+          setUserName(respons[0].name)
+          setUserDescription(respons[0].about)
+          setCards(respons[1])
+        })
+    }, [])
 
     return (
         <div className="conteiner">
@@ -52,7 +42,6 @@ function Main (props) {
             {cards.map((item) => {
 						return (<Card card={item} onCardClick={props.onCardClick} key={item._id} />)
 					})}
-                       
             </div>
           </section>
         </main>
