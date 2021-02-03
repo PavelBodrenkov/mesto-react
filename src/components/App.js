@@ -16,21 +16,21 @@ function App() {
 
 
   function handleCardClick(card) {
-    setIsPhotoPopupOpen(!isPhotoPopupOpen)
+    setIsPhotoPopupOpen(true)
     setSelectedCard(card)
   }
 
 
   function handleEditAvatarClick() {
-    setIsEditAvatarPopupOpen(!isEditAvatarPopupOpen)
+    setIsEditAvatarPopupOpen(true)
   }
 
   function handleEditProfileClick() {
-    setIsEditProfilePopupOpen(!isEditProfilePopupOpen)
+    setIsEditProfilePopupOpen(true)
   }
 
   function handleAddPlaceClick() {
-    setIsAddPlacePopupOpen(!isAddPlacePopupOpen)
+    setIsAddPlacePopupOpen(true)
   }
 
   function closeAllPopup() {
