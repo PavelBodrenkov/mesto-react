@@ -1,21 +1,36 @@
+import { useEffect } from "react"
+import { Esc } from './../utils/constants.js'
 
-function PopupWithForm (props) {
+function PopupWithForm(props) {
 
-    return (
-    /*<!--Попап профиля-->*/
-      <div className={`popup popup_type_${props.name} ${props.isOpen && 'popup_opened'}`}>
+  useEffect(() => {
+    if (!props.isOpen) return;
+    const closeESC = (evt) => {
+      if (evt.keyCode === Esc) {
+        props.onClose()
+      }
+    }
+    document.addEventListener('keydown', closeESC)
+
+    return () => {
+      document.removeEventListener('keydown', closeESC)
+    };
+
+  }, [props.isOpen, props.onClose]
+  );
+
+  return (
+    <div className={`popup popup_type_${props.name} ${props.isOpen && 'popup_opened'}`} onClick={props.closeOver}>
       <div className="popup__conteiner">
         <form action="#" id="form_reset" className={`form form_type_${props.name_form}`} name={`popup-${props.name}`} novalidate>
           <h2 className='popup__title'>{props.title}</h2>
-          {/* <button className="button button_type_save button_type_save-edit" type="submit" name="button"
-            value="Сохранить">{props.children}</button> */}
-            {props.children}
+          {props.children}
         </form>
-        <button onClick ={props.onClose} aria-label="Закрыть_попап" className="button button_type_close" type="button"></button>
+        <button onClick={props.onClose} aria-label="Закрыть_попап" className="button button_type_close" type="button"></button>
       </div>
     </div>
-    
-    )
+
+  )
 }
 
 export default PopupWithForm 

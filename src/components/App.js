@@ -3,7 +3,7 @@ import Main from './../components/Main.js';
 import Footer from './../components/Footer.js'
 import PopupWithForm from './PopupWithForm.js'
 import ImagesPopup from './ImagesPopup.js'
-import {useState} from 'react';
+import { useState } from 'react';
 
 
 function App() {
@@ -14,7 +14,8 @@ function App() {
   const [selectedCard, setSelectedCard] = useState({})
 
 
-  function handleCardClick (card) {
+
+  function handleCardClick(card) {
     setIsPhotoPopupOpen(!isPhotoPopupOpen)
     setSelectedCard(card)
   }
@@ -23,7 +24,7 @@ function App() {
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(!isEditAvatarPopupOpen)
   }
-  
+
   function handleEditProfileClick() {
     setIsEditProfilePopupOpen(!isEditProfilePopupOpen)
   }
@@ -32,29 +33,38 @@ function App() {
     setIsAddPlacePopupOpen(!isAddPlacePopupOpen)
   }
 
-  function closeAllPopup () {
+  function closeAllPopup() {
     setIsEditProfilePopupOpen(false)
     setIsEditAvatarPopupOpen(false)
     setIsAddPlacePopupOpen(false)
     setIsPhotoPopupOpen(false)
   }
 
+  function escClose() {
+    const yyy = (event) => {
+      if (event.target.classList.contains('popup_opened')) {
+        closeAllPopup()
+      }
+    }
+    document.addEventListener('click', yyy)
+  }
+
   return (
     <div className="page">
       <Header />
       <Main onEditProfile={handleEditProfileClick}
-            onAddPlace={handleAddPlaceClick}
-            onEditAvatar={handleEditAvatarClick}
-            onCardClick={handleCardClick}
+        onAddPlace={handleAddPlaceClick}
+        onEditAvatar={handleEditAvatarClick}
+        onCardClick={handleCardClick}
       />
-      <Footer  />
+      <Footer />
 
-      <PopupWithForm  isOpen ={isEditProfilePopupOpen} onClose={closeAllPopup}
-      name="edit"
-      title='Редактировать профиль'
-      children ={
-        <>
-             <input id="text-input" className="popup__data popup__data_type_name" type="text" placeholder="Имя" name="name"
+      <PopupWithForm isOpen={isEditProfilePopupOpen} onClose={closeAllPopup} closeOver={escClose}
+        name="edit"
+        title='Редактировать профиль'
+        children={
+          <>
+            <input id="text-input" className="popup__data popup__data_type_name" type="text" placeholder="Имя" name="name"
               value="" minlength="2" maxlength="40" required />
             <span id="text-input-error" className="popup__data-error"></span>
             <input id="subtext-input" className="popup__data popup__data_type_job" type="text" placeholder="Вид деятельности"
@@ -62,27 +72,27 @@ function App() {
             <span id="subtext-input-error" className="popup__data-error"></span>
             <button className="button button_type_save button_type_save-edit" type="submit" name="button"
               value="Сохранить">Сохранить</button>
-        </>
-      }
+          </>
+        }
       />
-      <PopupWithForm  isOpen ={isEditAvatarPopupOpen} onClose={closeAllPopup}
-      name="avatar"
-      title="Обновить аватар"
-      children={
-        <>
-              <input id="avatar-input" class="popup__data popup__data_photo" type="url" name="photoAvatar" value=""
+      <PopupWithForm isOpen={isEditAvatarPopupOpen} onClose={closeAllPopup} closeOver={escClose}
+        name="avatar"
+        title="Обновить аватар"
+        children={
+          <>
+            <input id="avatar-input" className="popup__data popup__data_photo" type="url" name="photoAvatar" value=""
               placeholder="Ссылка на картинку" required />
-            <span id="avatar-input-error" class="popup__data-error"></span>
-            <button class="button button_type_save button_type_save-profile" type="submit" name="button"
+            <span id="avatar-input-error" className="popup__data-error"></span>
+            <button className="button button_type_save button_type_save-profile" type="submit" name="button"
               value="Сохранить">Сохранить</button>
-        </>
-      }
+          </>
+        }
       />
-      <PopupWithForm  isOpen ={isAddPlacePopupOpen} onClose={closeAllPopup}
-      name="photo"
-      title="Новое место"
-      children={
-        <>
+      <PopupWithForm isOpen={isAddPlacePopupOpen} onClose={closeAllPopup} closeOver={escClose}
+        name="photo"
+        title="Новое место"
+        children={
+          <>
             <input id="photo-input" className="popup__data popup__data_photo popup__data_type_location" type="text"
               name="point" value="" placeholder="Название" minlength="2" maxlength="30" required />
             <span id="photo-input-error" className="popup__data-error"></span>
@@ -91,11 +101,10 @@ function App() {
             <span id="url-input-error" className="popup__data-error"></span>
             <button className="button button_type_save button_type_save-add" type="submit" name="button"
               value="Создать">Создать</button>
-        </>
-      }
+          </>
+        }
       />
-     
-      <ImagesPopup  card={selectedCard} onClose={closeAllPopup} isOpen={isPhotoPopupOpen} />
+      <ImagesPopup card={selectedCard} onClose={closeAllPopup} isOpen={isPhotoPopupOpen} closeOver={escClose} />
     </div >
   );
 }
