@@ -1,6 +1,6 @@
-import Header from './../components/Header.js';
-import Main from './../components/Main.js';
-import Footer from './../components/Footer.js'
+import Header from './Header.js';
+import Main from './Main.js';
+import Footer from './Footer.js'
 import PopupWithForm from './PopupWithForm.js'
 import ImagePopup from './ImagePopup.js'
 import { useState } from 'react';
