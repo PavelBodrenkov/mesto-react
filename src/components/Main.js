@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import api from './../utils/Api.js'
+import api from '../utils/api.js'
 import Card from './Card.js'
 
 
@@ -19,12 +19,15 @@ function Main(props) {
       })
   }, [])
 
+  
+
   return (
+    
     <div className="conteiner">
       <main className="main">
         <section className="profile">
           <div onClick={props.onEditAvatar} className="profile__avatar-container">
-            <img src={userAvatar} alt="Жак-Ив Кусто" className="profile__avatar" />
+            <img src={userAvatar} alt={userName} className="profile__avatar" />
           </div>
           <div className="profile__info">
             <div className="profile__edit">

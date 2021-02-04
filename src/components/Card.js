@@ -8,7 +8,7 @@ function Card(props) {
   return (
     <article className="element">
       <button aria-label="Удалить" className="button button_type_delete" type="button"></button>
-      <button onClick={handleClick} className="button button_type_photo"><img className="element__photo" alt="Фото" src={props.card.link} /></button>
+      <button onClick={handleClick} className="button button_type_photo"><img className="element__photo" alt={props.card.name} src={props.card.link} /></button>
       <div className="element__position">
         <h3 className="element__subtitle">{props.card.name}</h3>
         <div>

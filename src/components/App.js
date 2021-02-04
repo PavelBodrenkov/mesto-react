@@ -61,49 +61,41 @@ function App() {
 
       <PopupWithForm isOpen={isEditProfilePopupOpen} onClose={closeAllPopup} closeOver={escClose}
         name="edit"
-        title='Редактировать профиль'
-        children={
-          <>
+        title='Редактировать профиль'>
             <input id="text-input" className="popup__data popup__data_type_name" type="text" placeholder="Имя" name="name"
-              value="" minlength="2" maxlength="40" required />
+              value="" minLength="2" maxLength="40" required />
             <span id="text-input-error" className="popup__data-error"></span>
             <input id="subtext-input" className="popup__data popup__data_type_job" type="text" placeholder="Вид деятельности"
-              name="profession" value="" minlength="2" maxlength="200" required />
+              name="profession" value="" minLength="2" maxLength="200" required />
             <span id="subtext-input-error" className="popup__data-error"></span>
             <button className="button button_type_save button_type_save-edit" type="submit" name="button"
               value="Сохранить">Сохранить</button>
-          </>
-        }
-      />
+      </PopupWithForm>
+      
       <PopupWithForm isOpen={isEditAvatarPopupOpen} onClose={closeAllPopup} closeOver={escClose}
         name="avatar"
-        title="Обновить аватар"
-        children={
-          <>
+        title="Обновить аватар" >
             <input id="avatar-input" className="popup__data popup__data_photo" type="url" name="photoAvatar" value=""
               placeholder="Ссылка на картинку" required />
             <span id="avatar-input-error" className="popup__data-error"></span>
             <button className="button button_type_save button_type_save-profile" type="submit" name="button"
               value="Сохранить">Сохранить</button>
-          </>
-        }
-      />
+      </PopupWithForm>
+      
       <PopupWithForm isOpen={isAddPlacePopupOpen} onClose={closeAllPopup} closeOver={escClose}
         name="photo"
-        title="Новое место"
-        children={
-          <>
+        title="Новое место" >
             <input id="photo-input" className="popup__data popup__data_photo popup__data_type_location" type="text"
-              name="point" value="" placeholder="Название" minlength="2" maxlength="30" required />
+              name="point" value="" placeholder="Название" minLength="2" maxLength="30" required />
             <span id="photo-input-error" className="popup__data-error"></span>
             <input id="url-input" className="popup__data popup__data_photo popup__data_type_link" type="url" name="photo"
               value="" placeholder="Ссылка на картинку" required />
             <span id="url-input-error" className="popup__data-error"></span>
             <button className="button button_type_save button_type_save-add" type="submit" name="button"
               value="Создать">Создать</button>
-          </>
-        }
-      />
+      </PopupWithForm> 
+      
+      
       <ImagePopup card={selectedCard} onClose={closeAllPopup} isOpen={isPhotoPopupOpen} closeOver={escClose} />
     </div >
   );
