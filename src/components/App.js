@@ -41,12 +41,12 @@ function App() {
   }
 
   function escClose() {
-    const yyy = (event) => {
+    const close = (event) => {
       if (event.target.classList.contains('popup_opened')) {
         closeAllPopup()
       }
     }
-    document.addEventListener('click', yyy)
+    document.addEventListener('click', close)
   }
 
   return (
@@ -63,10 +63,10 @@ function App() {
         name="edit"
         title='Редактировать профиль'>
             <input id="text-input" className="popup__data popup__data_type_name" type="text" placeholder="Имя" name="name"
-              value="" minLength="2" maxLength="40" required />
+               minLength="2" maxLength="40" required />
             <span id="text-input-error" className="popup__data-error"></span>
             <input id="subtext-input" className="popup__data popup__data_type_job" type="text" placeholder="Вид деятельности"
-              name="profession" value="" minLength="2" maxLength="200" required />
+              name="profession"  minLength="2" maxLength="200" required />
             <span id="subtext-input-error" className="popup__data-error"></span>
             <button className="button button_type_save button_type_save-edit" type="submit" name="button"
               value="Сохранить">Сохранить</button>
@@ -75,7 +75,7 @@ function App() {
       <PopupWithForm isOpen={isEditAvatarPopupOpen} onClose={closeAllPopup} closeOver={escClose}
         name="avatar"
         title="Обновить аватар" >
-            <input id="avatar-input" className="popup__data popup__data_photo" type="url" name="photoAvatar" value=""
+            <input id="avatar-input" className="popup__data popup__data_photo" type="url" name="photoAvatar" 
               placeholder="Ссылка на картинку" required />
             <span id="avatar-input-error" className="popup__data-error"></span>
             <button className="button button_type_save button_type_save-profile" type="submit" name="button"
@@ -86,10 +86,10 @@ function App() {
         name="photo"
         title="Новое место" >
             <input id="photo-input" className="popup__data popup__data_photo popup__data_type_location" type="text"
-              name="point" value="" placeholder="Название" minLength="2" maxLength="30" required />
+              name="point"  placeholder="Название" minLength="2" maxLength="30" required />
             <span id="photo-input-error" className="popup__data-error"></span>
             <input id="url-input" className="popup__data popup__data_photo popup__data_type_link" type="url" name="photo"
-              value="" placeholder="Ссылка на картинку" required />
+               placeholder="Ссылка на картинку" required />
             <span id="url-input-error" className="popup__data-error"></span>
             <button className="button button_type_save button_type_save-add" type="submit" name="button"
               value="Создать">Создать</button>

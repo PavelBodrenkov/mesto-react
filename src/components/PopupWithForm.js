@@ -22,7 +22,7 @@ function PopupWithForm(props) {
   return (
     <div className={`popup popup_type_${props.name} ${props.isOpen && 'popup_opened'}`} onClick={props.closeOver}>
       <div className="popup__conteiner">
-        <form action="#" id="form_reset" className={`form form_type_${props.name_form}`} name={`popup-${props.name}`} novalidate>
+        <form action="#" id="form_reset" className={`form form_type_${props.name_form}`} name={`popup-${props.name}`} noValidate>
           <h2 className='popup__title'>{props.title}</h2>
           {props.children}
         </form>
