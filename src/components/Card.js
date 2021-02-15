@@ -1,19 +1,40 @@
+import React from 'react';
+import { InitialProfileContext } from "./../contexts/CurrentUserContext";
 
-function Card(props) {
 
+function Card({card ,onCardClick, onCardLike, onCardDelete, onPopupDel}) {
+  const currentUser = React.useContext(InitialProfileContext);
+
+  const isOwn = card.owner._id === currentUser._id
+  const cardDeleteButtonClassName = (`button button_type_delete ${isOwn ? 'button_type_delete': 'button_type_delete-hidden'}`)
+
+  const isLiked = card.likes.some(item => item._id === currentUser._id)
+  const cardLikeButtonClassName  = (`button button_type_like ${isLiked ? 'button_type_like_active': 'button_type_like'}`)
+ 
   function handleClick() {
-    props.onCardClick(props.card)
+    onCardClick(card)
   }
+
+  function handleLikeClick () {
+    onCardLike(card)
+  }
+
+  function handleDeleteClick () {
+    onPopupDel()
+    
+  }
+
+  
 
   return (
     <article className="element">
-      <button aria-label="Удалить" className="button button_type_delete" type="button"></button>
-      <button onClick={handleClick} className="button button_type_photo"><img className="element__photo" alt={props.card.name} src={props.card.link} /></button>
+      <button onClick={handleDeleteClick} aria-label="Удалить" className={cardDeleteButtonClassName} type="button"></button>
+      <button onClick={handleClick} className="button button_type_photo"><img className="element__photo" alt={card.name} src={card.link} /></button>
       <div className="element__position">
-        <h3 className="element__subtitle">{props.card.name}</h3>
+        <h3 className="element__subtitle">{card.name}</h3>
         <div>
-          <button aria-label="Поставить_лайк" className="button button_type_like" type="button"></button>
-          <div className="element__counter_like">{props.card.likes.length}</div>
+          <button onClick={handleLikeClick} aria-label="Поставить_лайк" className={cardLikeButtonClassName} type="button"></button>
+          <div className="element__counter_like">{card.likes.length}</div>
         </div>
       </div>
     </article>
