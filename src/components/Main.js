@@ -2,23 +2,24 @@ import React from "react";
 import Card from "./Card.js";
 import { InitialProfileContext } from "./../contexts/CurrentUserContext";
 import { InitialCards } from "./../contexts/CardContext";
-import DeleteCardPopup from './DeleteCardPopup'
 
-
-function Main({onCardClick, onCardLike, onCardDelete, onEditProfile, onAddPlace, onEditAvatar, noLike, onPopupDel}) {
+function Main({
+  onCardClick,
+  onCardLike,
+  onCardDelete,
+  onEditProfile,
+  onAddPlace,
+  onEditAvatar,
+  noLike
+}) {
   const currentUser = React.useContext(InitialProfileContext);
   const cards = React.useContext(InitialCards);
-
-  
 
   return (
     <div className="conteiner">
       <main className="main">
         <section className="profile">
-          <div
-            onClick={onEditAvatar}
-            className="profile__avatar-container"
-          >
+          <div onClick={onEditAvatar} className="profile__avatar-container">
             <img
               src={currentUser.avatar}
               alt={currentUser.name}
@@ -47,18 +48,15 @@ function Main({onCardClick, onCardLike, onCardDelete, onEditProfile, onAddPlace,
         <section className="elements">
           <div className="elements__content">
             {cards.map((item) => {
-             
               return (
                 <Card
                   card={item}
                   onCardClick={onCardClick}
                   key={item._id}
                   onCardLike={onCardLike}
-                  // onCardDelete={onCardDelete}
+                  onCardDelete={onCardDelete}
                   noLike={noLike}
-                  onPopupDel={onPopupDel}
                 />
-                
               );
             })}
           </div>

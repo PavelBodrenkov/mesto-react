@@ -1,4 +1,4 @@
-import { React, useRef } from "react";
+import { React, useRef, useEffect } from "react";
 import PopupWithForm from "./PopupWithForm.js";
 
 function AddPlacePopup({
@@ -7,10 +7,12 @@ function AddPlacePopup({
   closeOver,
   name,
   title,
-  onAddPlace
+  onAddPlace,
+  loading
 }) {
   const nameCurrent = useRef();
   const linkCurrent = useRef();
+  const load = useRef(null);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -21,6 +23,12 @@ function AddPlacePopup({
     nameCurrent.current.value = "";
     linkCurrent.current.value = "";
   }
+
+  useEffect(() => {
+    loading
+      ? (load.current.textContent = "Сохранение...")
+      : (load.current.textContent = "Сохранить");
+  }, [loading]);
 
   return (
     <PopupWithForm
@@ -54,6 +62,7 @@ function AddPlacePopup({
       />
       <span id="url-input-error" className="popup__data-error"></span>
       <button
+        ref={load}
         className="button button_type_save button_type_save-add"
         type="submit"
         name="button"

@@ -1,12 +1,21 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { Esc } from "./../utils/constants.js";
 
-function PopupWithForm(props) {
+function PopupWithForm({
+  isOpen,
+  onClose,
+  name,
+  closeOver,
+  form,
+  name_form,
+  children,
+  title
+}) {
   useEffect(() => {
-    if (!props.isOpen) return;
+    if (!isOpen) return null;
     const closeESC = (evt) => {
       if (evt.keyCode === Esc) {
-        props.onClose();
+        onClose();
       }
     };
     document.addEventListener("keydown", closeESC);
@@ -14,29 +23,27 @@ function PopupWithForm(props) {
     return () => {
       document.removeEventListener("keydown", closeESC);
     };
-  }, [props.isOpen, props.onClose]);
+  }, [isOpen, onClose]);
 
   return (
     <div
-      className={`popup popup_type_${props.name} ${
-        props.isOpen && "popup_opened"
-      }`}
-      onClick={props.closeOver}
+      className={`popup popup_type_${name} ${isOpen && "popup_opened"}`}
+      onClick={closeOver}
     >
       <div className="popup__conteiner">
         <form
-          onSubmit={props.form}
+          onSubmit={form}
           action="#"
           id="form_reset"
-          className={`form form_type_${props.name_form}`}
-          name={`popup-${props.name}`}
+          className={`form form_type_${name_form}`}
+          name={`popup-${name}`}
           noValidate
         >
-          <h2 className="popup__title">{props.title}</h2>
-          {props.children}
+          <h2 className="popup__title">{title}</h2>
+          {children}
         </form>
         <button
-          onClick={props.onClose}
+          onClick={onClose}
           aria-label="Закрыть_попап"
           className="button button_type_close"
           type="button"

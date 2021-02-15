@@ -10,7 +10,7 @@ import { InitialCards } from "./../contexts/CardContext";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
-import DeleteCardPopup from "./DeleteCardPopup"
+import DeleteCardPopup from "./DeleteCardPopup";
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -20,9 +20,10 @@ function App() {
   const [selectedCard, setSelectedCard] = useState({});
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
-  // const [loading, setLoading] = useState(true);
-  const [like, setLike] = useState(false)
-  const [delPopup, setDelPopup] = useState(false)
+  const [loading, setLoading] = useState(false);
+  const [like, setLike] = useState(false);
+  const [delPopup, setDelPopup] = useState(false);
+  const [cardToDelete, setCardToDelete] = useState({});
 
   useEffect(() => {
     Promise.all([api.getInitialProfile(), api.getInitialCards()])
@@ -34,38 +35,56 @@ function App() {
         console.log(`Ошибка: ${err}`);
       });
   }, []);
-  
-  function handleCardLike  (card) {
-    const isLiked = card.likes.some((item) => item._id === currentUser._id)
+
+  function handleCardLike(card) {
+    const isLiked = card.likes.some((item) => item._id === currentUser._id);
     if (!isLiked) {
-      api.addLike(card._id, !isLiked)
+      api
+        .addLike(card._id, !isLiked)
         .then((newCard) => {
-          const newCards = cards.map((item) => item._id === card._id ? newCard : item)
-          // document.querySelector('.button_type_like').classList.add('button_type_like_active')
+          const newCards = cards.map((item) =>
+            item._id === card._id ? newCard : item
+          );
           setCards(newCards);
+        })
+        .catch((err) => {
+          console.log(`Ошибка: ${err}`);
         });
     } else {
-      setLike(false)
-      api.deleteLike(card._id, isLiked)
+      setLike(false);
+      api
+        .deleteLike(card._id, isLiked)
         .then((newCard) => {
-          console.log(newCard)
-          const newCards = cards.map((item) => item._id === card._id ? newCard : item)
+          const newCards = cards.map((item) =>
+            item._id === card._id ? newCard : item
+          );
           setCards(newCards);
-
         })
+        .catch((err) => {
+          console.log(`Ошибка: ${err}`);
+        });
     }
   }
 
-  function handleCardDelete (card) {
-    console.log(card._id)
-    
-    api.deleteAddCard(card._id)
-        .then((newCard) => {
-          console.log(newCard)
-          const delcard = cards.filter((item) => item._id !== card._id)
-          console.log(delcard)
-          setCards(delcard)
-        })
+  function hendleDeleteCard(card) {
+    setCardToDelete(card);
+    setDelPopup(true);
+  }
+
+  function handleCardDeleteSubmit() {
+    api
+      .deleteAddCard(cardToDelete._id)
+      .then(() => {
+        const delcard = cards.filter((item) => item._id !== cardToDelete._id);
+        setCards(delcard);
+      })
+      .catch((err) => {
+        console.log(`Ошибка: ${err}`);
+      })
+      .finally(() => {
+        setCardToDelete({});
+        closeAllPopup();
+      });
   }
 
   function handleCardClick(card) {
@@ -90,6 +109,7 @@ function App() {
     setIsEditAvatarPopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setIsPhotoPopupOpen(false);
+    setDelPopup(false);
   }
 
   function escClose(event) {
@@ -98,10 +118,10 @@ function App() {
     }
   }
 
-  function handleUpdateUser(props) {
-    console.log(props);
-
-    api.pathEditProfile({ name: props.name, about: props.about })
+  function handleUpdateUser({ name, about }) {
+    setLoading(true);
+    api
+      .pathEditProfile({ name: name, about: about })
       .then((res) => {
         setCurrentUser(res);
         closeAllPopup();
@@ -109,33 +129,35 @@ function App() {
       .catch((err) => {
         console.log(`Ошибка: ${err}`);
       })
-      .finally(() => {});
+      .finally(() => setLoading(false));
   }
 
-  function handleUpdateAvatar(props) {
-    api.addAvatar({ avatar: props.avatar })
+  function handleUpdateAvatar({ avatar }) {
+    setLoading(true);
+    api
+      .addAvatar({ avatar: avatar })
       .then((res) => {
         setCurrentUser(res);
         closeAllPopup();
       })
       .catch((err) => {
         console.log(`Ошибка: ${err}`);
-      });
+      })
+      .finally(() => setLoading(false));
   }
 
-  function handleAddPlaceSubmit(props) {
-    api.postAddCard({ name: props.name, link: props.link })
+  function handleAddPlaceSubmit({ name, link }) {
+    setLoading(true);
+    api
+      .postAddCard({ name: name, link: link })
       .then((res) => {
         setCards([res, ...cards]);
         closeAllPopup();
       })
       .catch((err) => {
         console.log(`Ошибка: ${err}`);
-      });
-  }
-
-  function handleDeleteCardClick () {
-    setDelPopup(true)
+      })
+      .finally(() => setLoading(false));
   }
 
   return (
@@ -149,10 +171,8 @@ function App() {
             onEditAvatar={handleEditAvatarClick}
             onCardClick={handleCardClick}
             onCardLike={handleCardLike}
-            // onCardDelete={handleCardDelete}
+            onCardDelete={hendleDeleteCard}
             noLike={like}
-            onPopupDel={handleDeleteCardClick}
-            
           />
           <Footer />
           <EditProfilePopup
@@ -160,6 +180,7 @@ function App() {
             onClose={closeAllPopup}
             closeOver={escClose}
             onUpdateUser={handleUpdateUser}
+            loading={loading}
           />
           <EditAvatarPopup
             isOpen={isEditAvatarPopupOpen}
@@ -168,8 +189,8 @@ function App() {
             name="avatar"
             title="Обновить аватар"
             onUpdateAvatar={handleUpdateAvatar}
+            loading={loading}
           />
-
           <AddPlacePopup
             isOpen={isAddPlacePopupOpen}
             onClose={closeAllPopup}
@@ -177,17 +198,22 @@ function App() {
             name="photo"
             title="Новое место"
             onAddPlace={handleAddPlaceSubmit}
+            loading={loading}
           />
-
-           <ImagePopup
+          <ImagePopup
             card={selectedCard}
             onClose={closeAllPopup}
             isOpen={isPhotoPopupOpen}
             closeOver={escClose}
           />
-
-          <DeleteCardPopup  isOpen={delPopup} name="delete" card={cards}  onCardDelete={handleCardDelete}/>
-
+          <DeleteCardPopup
+            isOpen={delPopup}
+            name="delete"
+            card={selectedCard}
+            onCardDelete={handleCardDeleteSubmit}
+            onClose={closeAllPopup}
+            closeOver={escClose}
+          />
         </InitialCards.Provider>
       </InitialProfileContext.Provider>
     </div>

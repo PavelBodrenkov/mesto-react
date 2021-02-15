@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef} from "react";
+import React, { useEffect, useState, useRef } from "react";
 import PopupWithForm from "./PopupWithForm.js";
 import { InitialProfileContext } from "./../contexts/CurrentUserContext";
 
@@ -7,14 +7,12 @@ function EditProfilePopup({
   onClose,
   closeOver,
   onUpdateUser,
-  onLoading,
-  offLoading
+  loading
 }) {
   const currentUser = React.useContext(InitialProfileContext);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const load = useRef(null);
-  // const [tr, setTr] = useState(true);
 
   useEffect(() => {
     setName(currentUser.name);
@@ -36,6 +34,12 @@ function EditProfilePopup({
       about: description
     });
   }
+
+  useEffect(() => {
+    loading
+      ? (load.current.textContent = "Сохранение...")
+      : (load.current.textContent = "Сохранить");
+  }, [loading]);
 
   return (
     <PopupWithForm

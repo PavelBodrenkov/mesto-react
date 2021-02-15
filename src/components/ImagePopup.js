@@ -1,35 +1,39 @@
-import React from 'react';
-import { Esc } from '../utils/constants.js'
-import { useEffect } from "react"
+import React from "react";
+import { Esc } from "../utils/constants.js";
+import { useEffect } from "react";
 
-function ImagePopup(props) {
-
+function ImagePopup({ isOpen, onClose, closeOver, card }) {
   useEffect(() => {
-    if (!props.isOpen) return;
+    if (!isOpen) return;
     const closeESC = (evt) => {
       if (evt.keyCode === Esc) {
-        props.onClose()
+        onClose();
       }
-    }
-    document.addEventListener('keydown', closeESC)
+    };
+    document.addEventListener("keydown", closeESC);
 
     return () => {
-      document.removeEventListener('keydown', closeESC)
+      document.removeEventListener("keydown", closeESC);
     };
-
-  }, [props.isOpen, props.onClose]
-  );
+  }, [isOpen, onClose]);
 
   return (
-    <div className={`popup popup_type_photo ${props.isOpen && 'popup_opened'}`} onClick={props.closeOver}>
+    <div
+      className={`popup popup_type_photo ${isOpen && "popup_opened"}`}
+      onClick={closeOver}
+    >
       <figure className="popup__big">
-        <button onClick={props.onClose} aria-label="Закрыть_попап" className="button button_type_close button_type_big-close" type="button"></button>
-        <img className="popup__big-photo" alt="Фото" src={`${props.card.link}`} />
+        <button
+          onClick={onClose}
+          aria-label="Закрыть_попап"
+          className="button button_type_close button_type_big-close"
+          type="button"
+        ></button>
+        <img className="popup__big-photo" alt="Фото" src={`${card.link}`} />
         <figcaption className="popup__big-title"></figcaption>
       </figure>
     </div>
-
-  )
+  );
 }
 
-export default ImagePopup
+export default ImagePopup;
