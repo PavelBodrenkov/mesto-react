@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import PopupWithForm from "./PopupWithForm.js";
-import { InitialProfileContext } from "./../contexts/CurrentUserContext";
+import { profileContext } from "./../contexts/CurrentUserContext";
 
 function EditProfilePopup({
   isOpen,
@@ -9,7 +9,7 @@ function EditProfilePopup({
   onUpdateUser,
   loading
 }) {
-  const currentUser = React.useContext(InitialProfileContext);
+  const currentUser = React.useContext(profileContext);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const load = useRef(null);
@@ -35,18 +35,23 @@ function EditProfilePopup({
     });
   }
 
-  useEffect(() => {
-    loading
-      ? (load.current.textContent = "Сохранение...")
-      : (load.current.textContent = "Сохранить");
-  }, [loading]);
+  const styles = {
+    buttonDisabled: {
+      background: 'grey',
+      cursor: 'default'
+    },
+    buttonNotDisabled: {
+      background: 'black',
+      cursor: 'pointer'
+    }
+  }
 
   return (
     <PopupWithForm
       isOpen={isOpen}
       onClose={onClose}
       closeOver={closeOver}
-      form={handleSubmit}
+      handleSubmit={handleSubmit}
       name="edit"
       title="Редактировать профиль"
     >
@@ -82,8 +87,10 @@ function EditProfilePopup({
         type="submit"
         name="button"
         value="Сохранить"
+        disabled={loading ? true : false}
+        style={loading ? styles.buttonDisabled : styles.buttonNotDisabled}
       >
-        Сохранить
+        {loading ? "Сохранение..." : "Сохранить"}
       </button>
     </PopupWithForm>
   );

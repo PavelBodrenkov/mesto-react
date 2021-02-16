@@ -5,8 +5,7 @@ import Footer from "./Footer";
 import ImagePopup from "./ImagePopup";
 import { useEffect, useState } from "react";
 import api from "../utils/api";
-import { InitialProfileContext } from "./../contexts/CurrentUserContext";
-import { InitialCards } from "./../contexts/CardContext";
+import { profileContext } from "./../contexts/CurrentUserContext";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
@@ -20,16 +19,18 @@ function App() {
   const [selectedCard, setSelectedCard] = useState({});
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [like, setLike] = useState(false);
+  const [loadingCard, setLoadingCard] = useState(false);
+  const [loadingProfile, setLoadingProfile] = useState(false)
+  const [loadingAvatar, setLoadingAvatar] = useState(false)
+  const [loadingDelete, setLoadingDelete] = useState(false)
   const [delPopup, setDelPopup] = useState(false);
   const [cardToDelete, setCardToDelete] = useState({});
 
   useEffect(() => {
     Promise.all([api.getInitialProfile(), api.getInitialCards()])
-      .then((res) => {
-        setCurrentUser(res[0]);
-        setCards(res[1]);
+      .then(([usersData, cards]) => {
+        setCurrentUser(usersData);
+        setCards(cards);
       })
       .catch((err) => {
         console.log(`Ошибка: ${err}`);
@@ -38,32 +39,16 @@ function App() {
 
   function handleCardLike(card) {
     const isLiked = card.likes.some((item) => item._id === currentUser._id);
-    if (!isLiked) {
-      api
-        .addLike(card._id, !isLiked)
-        .then((newCard) => {
-          const newCards = cards.map((item) =>
-            item._id === card._id ? newCard : item
-          );
-          setCards(newCards);
-        })
-        .catch((err) => {
-          console.log(`Ошибка: ${err}`);
-        });
-    } else {
-      setLike(false);
-      api
-        .deleteLike(card._id, isLiked)
-        .then((newCard) => {
-          const newCards = cards.map((item) =>
-            item._id === card._id ? newCard : item
-          );
-          setCards(newCards);
-        })
-        .catch((err) => {
-          console.log(`Ошибка: ${err}`);
-        });
-    }
+    const likeRequest = isLiked ? api.deleteLike(card._id) : api.addLike(card._id)
+    likeRequest.then((newCard) => {
+      const newCards = cards.map((item) =>
+        item._id === card._id ? newCard : item
+      )
+      setCards(newCards);
+    })
+      .catch((err) => {
+        console.log(`Ошибка: ${err}`)
+      })
   }
 
   function hendleDeleteCard(card) {
@@ -72,18 +57,20 @@ function App() {
   }
 
   function handleCardDeleteSubmit() {
+    setLoadingDelete(true)
     api
       .deleteAddCard(cardToDelete._id)
       .then(() => {
         const delcard = cards.filter((item) => item._id !== cardToDelete._id);
         setCards(delcard);
+        closeAllPopup();
       })
       .catch((err) => {
         console.log(`Ошибка: ${err}`);
       })
       .finally(() => {
         setCardToDelete({});
-        closeAllPopup();
+        setLoadingDelete(false)
       });
   }
 
@@ -119,7 +106,7 @@ function App() {
   }
 
   function handleUpdateUser({ name, about }) {
-    setLoading(true);
+    setLoadingProfile(true);
     api
       .pathEditProfile({ name: name, about: about })
       .then((res) => {
@@ -129,11 +116,11 @@ function App() {
       .catch((err) => {
         console.log(`Ошибка: ${err}`);
       })
-      .finally(() => setLoading(false));
+      .finally(() => setLoadingProfile(false));
   }
 
   function handleUpdateAvatar({ avatar }) {
-    setLoading(true);
+    setLoadingAvatar(true);
     api
       .addAvatar({ avatar: avatar })
       .then((res) => {
@@ -143,79 +130,82 @@ function App() {
       .catch((err) => {
         console.log(`Ошибка: ${err}`);
       })
-      .finally(() => setLoading(false));
+      .finally(() => setLoadingAvatar(false));
   }
 
-  function handleAddPlaceSubmit({ name, link }) {
-    setLoading(true);
+  function handleAddPlaceSubmit({ name, link}) {
+    setLoadingCard(true);
     api
       .postAddCard({ name: name, link: link })
       .then((res) => {
         setCards([res, ...cards]);
-        closeAllPopup();
+        if (res) {
+          closeAllPopup()
+
+        }
+
       })
       .catch((err) => {
         console.log(`Ошибка: ${err}`);
       })
-      .finally(() => setLoading(false));
+      .finally(() => setLoadingCard(false));
   }
 
   return (
     <div className="page">
-      <InitialProfileContext.Provider value={currentUser}>
-        <InitialCards.Provider value={cards}>
-          <Header />
-          <Main
-            onEditProfile={handleEditProfileClick}
-            onAddPlace={handleAddPlaceClick}
-            onEditAvatar={handleEditAvatarClick}
-            onCardClick={handleCardClick}
-            onCardLike={handleCardLike}
-            onCardDelete={hendleDeleteCard}
-            noLike={like}
-          />
-          <Footer />
-          <EditProfilePopup
-            isOpen={isEditProfilePopupOpen}
-            onClose={closeAllPopup}
-            closeOver={escClose}
-            onUpdateUser={handleUpdateUser}
-            loading={loading}
-          />
-          <EditAvatarPopup
-            isOpen={isEditAvatarPopupOpen}
-            onClose={closeAllPopup}
-            closeOver={escClose}
-            name="avatar"
-            title="Обновить аватар"
-            onUpdateAvatar={handleUpdateAvatar}
-            loading={loading}
-          />
-          <AddPlacePopup
-            isOpen={isAddPlacePopupOpen}
-            onClose={closeAllPopup}
-            closeOver={escClose}
-            name="photo"
-            title="Новое место"
-            onAddPlace={handleAddPlaceSubmit}
-            loading={loading}
-          />
-          <ImagePopup
-            card={selectedCard}
-            onClose={closeAllPopup}
-            isOpen={isPhotoPopupOpen}
-            closeOver={escClose}
-          />
-          <DeleteCardPopup
-            isOpen={delPopup}
-            name="delete"
-            card={selectedCard}
-            onCardDelete={handleCardDeleteSubmit}
-            onClose={closeAllPopup}
-            closeOver={escClose}
-          />
-        </InitialCards.Provider>
-      </InitialProfileContext.Provider>
+      <profileContext.Provider value={currentUser}>
+        <Header />
+        <Main
+          onEditProfile={handleEditProfileClick}
+          onAddPlace={handleAddPlaceClick}
+          onEditAvatar={handleEditAvatarClick}
+          onCardClick={handleCardClick}
+          onCardLike={handleCardLike}
+          onCardDelete={hendleDeleteCard}
+          cardsContext={cards}
+        />
+        <Footer />
+        <EditProfilePopup
+          isOpen={isEditProfilePopupOpen}
+          onClose={closeAllPopup}
+          closeOver={escClose}
+          onUpdateUser={handleUpdateUser}
+          loading={loadingProfile}
+        />
+        <EditAvatarPopup
+          isOpen={isEditAvatarPopupOpen}
+          onClose={closeAllPopup}
+          closeOver={escClose}
+          name="avatar"
+          title="Обновить аватар"
+          onUpdateAvatar={handleUpdateAvatar}
+          loading={loadingAvatar}
+        />
+        <AddPlacePopup
+          isOpen={isAddPlacePopupOpen}
+          onClose={closeAllPopup}
+          closeOver={escClose}
+          name="photo"
+          title="Новое место"
+          onAddPlace={handleAddPlaceSubmit}
+          loading={loadingCard}
+        />
+        <ImagePopup
+          card={selectedCard}
+          onClose={closeAllPopup}
+          isOpen={isPhotoPopupOpen}
+          closeOver={escClose}
+        />
+        <DeleteCardPopup
+          isOpen={delPopup}
+          name="delete"
+          card={selectedCard}
+          onCardDelete={handleCardDeleteSubmit}
+          onClose={closeAllPopup}
+          closeOver={escClose}
+          loading={loadingDelete}
+        />
+      </profileContext.Provider>
     </div>
   );
 }

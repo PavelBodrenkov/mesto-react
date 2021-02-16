@@ -1,12 +1,11 @@
 import React from "react";
-import { Esc } from "../utils/constants.js";
 import { useEffect } from "react";
 
 function ImagePopup({ isOpen, onClose, closeOver, card }) {
   useEffect(() => {
     if (!isOpen) return;
     const closeESC = (evt) => {
-      if (evt.keyCode === Esc) {
+      if (evt.keyCode === 27) {
         onClose();
       }
     };

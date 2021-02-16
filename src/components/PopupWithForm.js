@@ -1,12 +1,11 @@
 import React, { useEffect } from "react";
-import { Esc } from "./../utils/constants.js";
 
 function PopupWithForm({
   isOpen,
   onClose,
   name,
   closeOver,
-  form,
+  handleSubmit,
   name_form,
   children,
   title
@@ -14,7 +13,7 @@ function PopupWithForm({
   useEffect(() => {
     if (!isOpen) return null;
     const closeESC = (evt) => {
-      if (evt.keyCode === Esc) {
+      if (evt.keyCode === 27) {
         onClose();
       }
     };
@@ -32,7 +31,7 @@ function PopupWithForm({
     >
       <div className="popup__conteiner">
         <form
-          onSubmit={form}
+          onSubmit={handleSubmit}
           action="#"
           id="form_reset"
           className={`form form_type_${name_form}`}

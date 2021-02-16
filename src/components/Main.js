@@ -1,7 +1,6 @@
 import React from "react";
 import Card from "./Card.js";
-import { InitialProfileContext } from "./../contexts/CurrentUserContext";
-import { InitialCards } from "./../contexts/CardContext";
+import { profileContext } from "./../contexts/CurrentUserContext";
 
 function Main({
   onCardClick,
@@ -10,11 +9,9 @@ function Main({
   onEditProfile,
   onAddPlace,
   onEditAvatar,
-  noLike
+  cardsContext
 }) {
-  const currentUser = React.useContext(InitialProfileContext);
-  const cards = React.useContext(InitialCards);
-
+  const currentUser = React.useContext(profileContext);
   return (
     <div className="conteiner">
       <main className="main">
@@ -47,7 +44,7 @@ function Main({
         </section>
         <section className="elements">
           <div className="elements__content">
-            {cards.map((item) => {
+            {cardsContext.map((item) => {
               return (
                 <Card
                   card={item}
@@ -55,7 +52,6 @@ function Main({
                   key={item._id}
                   onCardLike={onCardLike}
                   onCardDelete={onCardDelete}
-                  noLike={noLike}
                 />
               );
             })}

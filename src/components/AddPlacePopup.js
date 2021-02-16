@@ -1,4 +1,4 @@
-import { React, useRef, useEffect } from "react";
+import { React, useEffect, useRef } from "react";
 import PopupWithForm from "./PopupWithForm.js";
 
 function AddPlacePopup({
@@ -10,9 +10,9 @@ function AddPlacePopup({
   onAddPlace,
   loading
 }) {
+
   const nameCurrent = useRef();
   const linkCurrent = useRef();
-  const load = useRef(null);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -20,15 +20,25 @@ function AddPlacePopup({
       name: nameCurrent.current.value,
       link: linkCurrent.current.value
     });
-    nameCurrent.current.value = "";
-    linkCurrent.current.value = "";
+  }
+  
+  const styles = {
+    buttonDisabled: {
+      background: 'grey',
+      cursor: 'default'
+    },
+    buttonNotDisabled: {
+      background: 'black',
+      cursor: 'pointer'
+    }
   }
 
   useEffect(() => {
-    loading
-      ? (load.current.textContent = "Сохранение...")
-      : (load.current.textContent = "Сохранить");
-  }, [loading]);
+    if (!isOpen) {
+      nameCurrent.current.value = ""
+      linkCurrent.current.value = ""
+    }
+  }, [isOpen])
 
   return (
     <PopupWithForm
@@ -37,7 +47,7 @@ function AddPlacePopup({
       closeOver={closeOver}
       name={name}
       title={title}
-      form={handleSubmit}
+      handleSubmit={handleSubmit}
     >
       <input
         ref={nameCurrent}
@@ -62,13 +72,15 @@ function AddPlacePopup({
       />
       <span id="url-input-error" className="popup__data-error"></span>
       <button
-        ref={load}
+
         className="button button_type_save button_type_save-add"
         type="submit"
         name="button"
         value="Создать"
+        disabled={loading ? true : false}
+        style={loading ? styles.buttonDisabled : styles.buttonNotDisabled}
       >
-        Создать
+        {loading ? "Сохранение..." : "Создать"}
       </button>
     </PopupWithForm>
   );

@@ -1,15 +1,26 @@
 import React from "react";
 import PopupWithForm from "./PopupWithForm.js";
-function DeleteCardPopup({ isOpen, onCardDelete, onClose, name, closeOver }) {
+function DeleteCardPopup({ isOpen, onCardDelete, onClose, name, closeOver, loading }) {
   function handleSubmit(e) {
     e.preventDefault();
     onCardDelete();
   }
 
+  const styles = {
+    buttonDisabled: {
+      background: 'grey',
+      cursor: 'default'
+    },
+    buttonNotDisabled: {
+      background: 'black',
+      cursor: 'pointer'
+    }
+  }
+
   return (
     <PopupWithForm
       isOpen={isOpen}
-      form={handleSubmit}
+      handleSubmit={handleSubmit}
       onClose={onClose}
       name={name}
       closeOver={closeOver}
@@ -20,8 +31,10 @@ function DeleteCardPopup({ isOpen, onCardDelete, onClose, name, closeOver }) {
         type="submit"
         name="button"
         value="yes"
+        disabled={loading ? true : false}
+        style={loading ? styles.buttonDisabled : styles.buttonNotDisabled}
       >
-        Да
+        {loading ? "Удаление..." : "Да"}
       </button>
     </PopupWithForm>
   );

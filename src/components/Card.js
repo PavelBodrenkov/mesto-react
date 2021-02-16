@@ -1,18 +1,16 @@
 import React from "react";
-import { InitialProfileContext } from "./../contexts/CurrentUserContext";
+import { profileContext } from "./../contexts/CurrentUserContext";
 
-function Card({ card, onCardClick, onCardLike, onCardDelete, onPopupDel }) {
-  const currentUser = React.useContext(InitialProfileContext);
+function Card({ card, onCardClick, onCardLike, onCardDelete }) {
+  const currentUser = React.useContext(profileContext);
 
   const isOwn = card.owner._id === currentUser._id;
-  const cardDeleteButtonClassName = `button button_type_delete ${
-    isOwn ? "button_type_delete" : "button_type_delete-hidden"
-  }`;
+  const cardDeleteButtonClassName = `button button_type_delete ${isOwn ? "button_type_delete" : "button_type_delete-hidden"
+    }`;
 
   const isLiked = card.likes.some((item) => item._id === currentUser._id);
-  const cardLikeButtonClassName = `button button_type_like ${
-    isLiked ? "button_type_like_active" : "button_type_like"
-  }`;
+  const cardLikeButtonClassName = `button button_type_like ${isLiked ? "button_type_like_active" : "button_type_like"
+    }`;
 
   function handleClick() {
     onCardClick(card);
