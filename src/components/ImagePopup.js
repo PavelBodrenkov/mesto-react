@@ -5,7 +5,7 @@ function ImagePopup({ isOpen, onClose, closeOver, card }) {
   useEffect(() => {
     if (!isOpen) return;
     const closeESC = (evt) => {
-      if (evt.keyCode === 27) {
+      if (evt.key === "Escape") {
         onClose();
       }
     };

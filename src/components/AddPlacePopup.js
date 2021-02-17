@@ -10,7 +10,6 @@ function AddPlacePopup({
   onAddPlace,
   loading
 }) {
-
   const nameCurrent = useRef();
   const linkCurrent = useRef();
 
@@ -21,24 +20,13 @@ function AddPlacePopup({
       link: linkCurrent.current.value
     });
   }
-  
-  const styles = {
-    buttonDisabled: {
-      background: 'grey',
-      cursor: 'default'
-    },
-    buttonNotDisabled: {
-      background: 'black',
-      cursor: 'pointer'
-    }
-  }
 
   useEffect(() => {
     if (!isOpen) {
-      nameCurrent.current.value = ""
-      linkCurrent.current.value = ""
+      nameCurrent.current.value = "";
+      linkCurrent.current.value = "";
     }
-  }, [isOpen])
+  }, [isOpen]);
 
   return (
     <PopupWithForm
@@ -48,6 +36,7 @@ function AddPlacePopup({
       name={name}
       title={title}
       handleSubmit={handleSubmit}
+      nameForm="photo"
     >
       <input
         ref={nameCurrent}
@@ -72,13 +61,13 @@ function AddPlacePopup({
       />
       <span id="url-input-error" className="popup__data-error"></span>
       <button
-
-        className="button button_type_save button_type_save-add"
+        className={`button button_type_save button_type_save-add ${
+          loading ? "button_type_disabled" : "button_type_save"
+        }`}
         type="submit"
         name="button"
         value="Создать"
         disabled={loading ? true : false}
-        style={loading ? styles.buttonDisabled : styles.buttonNotDisabled}
       >
         {loading ? "Сохранение..." : "Создать"}
       </button>

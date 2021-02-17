@@ -35,17 +35,6 @@ function EditProfilePopup({
     });
   }
 
-  const styles = {
-    buttonDisabled: {
-      background: 'grey',
-      cursor: 'default'
-    },
-    buttonNotDisabled: {
-      background: 'black',
-      cursor: 'pointer'
-    }
-  }
-
   return (
     <PopupWithForm
       isOpen={isOpen}
@@ -54,6 +43,7 @@ function EditProfilePopup({
       handleSubmit={handleSubmit}
       name="edit"
       title="Редактировать профиль"
+      nameForm="edit"
     >
       <input
         onChange={handleNameChange}
@@ -83,12 +73,13 @@ function EditProfilePopup({
       <span id="subtext-input-error" className="popup__data-error"></span>
       <button
         ref={load}
-        className="button button_type_save button_type_save-edit"
+        className={`button button_type_save button_type_save-edit ${
+          loading ? "button_type_disabled" : "button_type_save"
+        }`}
         type="submit"
         name="button"
         value="Сохранить"
         disabled={loading ? true : false}
-        style={loading ? styles.buttonDisabled : styles.buttonNotDisabled}
       >
         {loading ? "Сохранение..." : "Сохранить"}
       </button>

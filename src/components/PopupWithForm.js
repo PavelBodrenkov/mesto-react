@@ -6,14 +6,14 @@ function PopupWithForm({
   name,
   closeOver,
   handleSubmit,
-  name_form,
+  nameForm,
   children,
   title
 }) {
   useEffect(() => {
     if (!isOpen) return null;
     const closeESC = (evt) => {
-      if (evt.keyCode === 27) {
+      if (evt.key === "Escape") {
         onClose();
       }
     };
@@ -34,7 +34,7 @@ function PopupWithForm({
           onSubmit={handleSubmit}
           action="#"
           id="form_reset"
-          className={`form form_type_${name_form}`}
+          className={`form form_type_${nameForm}`}
           name={`popup-${name}`}
           noValidate
         >

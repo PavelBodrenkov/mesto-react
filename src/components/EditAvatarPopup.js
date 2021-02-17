@@ -21,20 +21,9 @@ function EditAvatarPopup({
 
   useEffect(() => {
     if (!isOpen) {
-      inputEl.current.value = ""
+      inputEl.current.value = "";
     }
-  }, [isOpen])
-
-  const styles = {
-    buttonDisabled: {
-      background: 'grey',
-      cursor: 'default'
-    },
-    buttonNotDisabled: {
-      background: 'black',
-      cursor: 'pointer'
-    }
-  }
+  }, [isOpen]);
 
   return (
     <PopupWithForm
@@ -44,6 +33,7 @@ function EditAvatarPopup({
       name={name}
       title={title}
       handleSubmit={handleSubmit}
+      nameForm="avatar"
     >
       <input
         ref={inputEl}
@@ -57,12 +47,13 @@ function EditAvatarPopup({
       <span id="avatar-input-error" className="popup__data-error"></span>
 
       <button
-        className="button button_type_save button_type_save-profile"
+        className={`button button_type_save button_type_save-profile ${
+          loading ? "button_type_disabled" : "button_type_save"
+        }`}
         type="submit"
         name="button"
         value="Сохранить"
         disabled={loading ? true : false}
-        style={loading ? styles.buttonDisabled : styles.buttonNotDisabled}
       >
         {loading ? "Сохранение..." : "Сохранить"}
       </button>
