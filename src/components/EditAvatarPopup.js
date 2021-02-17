@@ -45,7 +45,6 @@ function EditAvatarPopup({
         required
       />
       <span id="avatar-input-error" className="popup__data-error"></span>
-
       <button
         className={`button button_type_save button_type_save-profile ${
           loading ? "button_type_disabled" : "button_type_save"
