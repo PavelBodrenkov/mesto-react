@@ -1,7 +1,7 @@
 {
   "name": "mesto-react",
   "version": "0.1.0",
-  "description": "Приложение, где можно добавлять и удалять фото, ставить лайки, редактировать данные профиля",
+  "description": "Приложение, где можно добавлять и удалять фото, ставить лайки, редактировать данные профиля и аватар",
   "author": "Pavel Bodrenkov",
   "private": true,
   "dependencies": {
@@ -21,7 +21,7 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
-  "homepages":"https://pavelbodrenkov.github.io/mesto-react/",
+  "homepage":"https://pavelbodrenkov.github.io/mesto-react/",
   "eslintConfig": {
     "extends": [
       "react-app",
