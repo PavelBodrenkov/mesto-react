@@ -29,7 +29,7 @@ function ImagePopup({ isOpen, onClose, closeOver, card }) {
           type="button"
         ></button>
         <img className="popup__big-photo" alt="Фото" src={`${card.link}`} />
-        <figcaption className="popup__big-title"></figcaption>
+        <figcaption className="popup__big-title">{`${card.name}`}</figcaption>
       </figure>
     </div>
   );

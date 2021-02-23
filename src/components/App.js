@@ -10,6 +10,7 @@ import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
 import DeleteCardPopup from "./DeleteCardPopup";
+import Login from './Login'
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -164,6 +165,7 @@ function App() {
           onCardDelete={hendleDeleteCard}
           cardsContext={cards}
         />
+        {/* <Login /> */}
         <Footer />
         <EditProfilePopup
           isOpen={isEditProfilePopupOpen}
@@ -205,6 +207,7 @@ function App() {
           closeOver={escClose}
           loading={loadingDelete}
         />
+      
       </profileContext.Provider>
     </div>
   );
