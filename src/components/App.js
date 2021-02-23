@@ -10,7 +10,8 @@ import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
 import DeleteCardPopup from "./DeleteCardPopup";
-import Login from './Login'
+import Login from './Login';
+import { Route, Switch } from "react-router-dom"
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -156,17 +157,25 @@ function App() {
     <div className="page">
       <profileContext.Provider value={currentUser}>
         <Header />
-        <Main
-          onEditProfile={handleEditProfileClick}
-          onAddPlace={handleAddPlaceClick}
-          onEditAvatar={handleEditAvatarClick}
-          onCardClick={handleCardClick}
-          onCardLike={handleCardLike}
-          onCardDelete={hendleDeleteCard}
-          cardsContext={cards}
-        />
-        {/* <Login /> */}
-        <Footer />
+        <Switch>
+          <Route path="/" exact>
+            <Main
+              onEditProfile={handleEditProfileClick}
+              onAddPlace={handleAddPlaceClick}
+              onEditAvatar={handleEditAvatarClick}
+              onCardClick={handleCardClick}
+              onCardLike={handleCardLike}
+              onCardDelete={hendleDeleteCard}
+              cardsContext={cards}
+            />
+            <Footer />
+          </Route>
+          <Route path="/login">
+            <Login />
+          </Route>
+        </Switch>
+        
+        
         <EditProfilePopup
           isOpen={isEditProfilePopupOpen}
           onClose={closeAllPopup}

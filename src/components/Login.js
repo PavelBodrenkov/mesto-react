@@ -1,5 +1,5 @@
 import React from 'react'
-import PopupWithForm from "./PopupWithForm.js";
+import {Link} from 'react-router-dom'
 
 
 
@@ -7,18 +7,16 @@ function Login () {
 
 
     return(
-      <div  className >
-      <div className="popup__conteiner">
-        <form action="#" id="form_reset" className name noValidate>
-          <h2 className="popup__title">Регистрация</h2>
-         
+      <div className="login">
+      <div className="login__container">
+        <form action="#" id="form_reset" className="login__form" name noValidate>
+          <h2 className="popup__title ligin__title">Регистрация</h2>
+          <input className="login__input" type="email" name="email" placeholder="Email"></input>
+          <input className="login__input" type="password" name="password" placeholder="Пароль"></input>
+          <button className="login__button">Зарегестрироваться</button>
+          <Link className="login__register">Уже зарегистрированы? Войти</Link>
         </form>
-        <button
-          
-          aria-label="Закрыть_попап"
-          className="button button_type_close"
-          type="button"
-        ></button>
+       
       </div>
     </div>
 
