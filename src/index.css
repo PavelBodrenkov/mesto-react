@@ -5,6 +5,7 @@
 /*Header*/
 @import url("./blocks/header/header.css");
 @import url("./blocks/header/__logo/header__logo.css");
+@import url("./blocks/header/__login/header__login.css");
 /*Profile*/
 @import url("./blocks/profile/profile.css");
 @import url("./blocks/profile/__avatar/profile__avatar.css");
@@ -58,3 +59,8 @@
 /*Login*/
 @import url("./blocks/login/login.css");
 @import url("./blocks/login/__container/login__container.css");
+@import url("./blocks/login/__title/login__title.css");
+@import url("./blocks/login/__input/login__input.css");
+@import url("./blocks/button/_type/button_type_login.css");
+@import url("./blocks/login/__form/login__form.css");
+@import url("./blocks/login/__register/login__register.css");
