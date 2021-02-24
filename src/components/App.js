@@ -10,8 +10,9 @@ import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
 import DeleteCardPopup from "./DeleteCardPopup";
+import Register from './Register';
+import { Route, Switch } from "react-router-dom";
 import Login from './Login';
-import { Route, Switch } from "react-router-dom"
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
@@ -27,6 +28,7 @@ function App() {
   const [loadingDelete, setLoadingDelete] = useState(false)
   const [delPopup, setDelPopup] = useState(false);
   const [cardToDelete, setCardToDelete] = useState({});
+  const [check, setCheck] = useState(false)
 
   useEffect(() => {
     Promise.all([api.getInitialProfile(), api.getInitialCards()])
@@ -153,10 +155,16 @@ function App() {
       .finally(() => setLoadingCard(false));
   }
 
+  function rout (item) {
+      setCheck(item)
+      console.log(check)
+    
+  }
+
   return (
     <div className="page">
       <profileContext.Provider value={currentUser}>
-        <Header />
+        <Header rout={rout}/>
         <Switch>
           <Route path="/" exact>
             <Main
@@ -170,12 +178,14 @@ function App() {
             />
             <Footer />
           </Route>
+          <Route path="/register">
+            <Register rout={rout}/>
+          </Route>
           <Route path="/login">
             <Login />
           </Route>
         </Switch>
-        
-        
+              
         <EditProfilePopup
           isOpen={isEditProfilePopupOpen}
           onClose={closeAllPopup}

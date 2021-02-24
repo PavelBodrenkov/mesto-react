@@ -1,4 +1,4 @@
-.login__input {
+.register__input {
     width: 100%;
     box-sizing: border-box;
     border: 0;
@@ -14,7 +14,7 @@
 }
 
 @media screen and (max-width: 500px) {
-    .login__input {
+    .register__input {
         font-size: 12px;
         height: 29.08px;
     }
