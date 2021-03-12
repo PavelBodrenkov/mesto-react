@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import Card from "./Card.js";
 import { profileContext } from "./../contexts/CurrentUserContext";
+import ReactPaginate from 'react-paginate';
 
 function Main({
   onCardClick,
@@ -12,6 +13,28 @@ function Main({
   cardsContext
 }) {
   const currentUser = React.useContext(profileContext);
+  const [pageNumber, setPageNumber] = useState(0)
+
+  const usersPerPage = 6
+  const pageVisited = pageNumber * usersPerPage
+
+  const displayUsers = cardsContext.slice(pageVisited, pageVisited + usersPerPage).map((item) => {
+    return (
+      <Card
+        card={item}
+        onCardClick={onCardClick}
+        key={item._id}
+        onCardLike={onCardLike}
+        onCardDelete={onCardDelete}
+      />
+    );
+  });
+
+  const pageCount = Math.ceil(cardsContext.length / usersPerPage)
+  const changePage = ({selected}) => {
+    setPageNumber(selected)
+  }
+
   return (
     <div className="conteiner">
       <main className="main">
@@ -44,18 +67,20 @@ function Main({
         </section>
         <section className="elements">
           <div className="elements__content">
-            {cardsContext.map((item) => {
-              return (
-                <Card
-                  card={item}
-                  onCardClick={onCardClick}
-                  key={item._id}
-                  onCardLike={onCardLike}
-                  onCardDelete={onCardDelete}
-                />
-              );
-            })}
+            {displayUsers}
+            
           </div>
+          <ReactPaginate 
+            previousLabel={"Назад"}
+            nextLabel={"Вперед"}
+            pageCount={pageCount}
+            onPageChange={changePage}
+            containerClassName={"paginationsBttn"}
+            previousLinkClassName={"previousBttn"}
+            nextLinkClassName={"nextBttn"}
+            disabledClassName={"paginationDisables"}
+            activeClassName={"paginationActive"}
+           />
         </section>
       </main>
     </div>

@@ -56,3 +56,5 @@
 @import url("./blocks/popup/__data/_type/popup__data_type_name.css");
 @import url("./blocks/popup/__data/_type/popup__data_type_job.css");
 @import url("./blocks/button/_type/button_type_disabled.css");
+/*Paginator*/
+@import url("./blocks/pagination/paginationBttn.css");
