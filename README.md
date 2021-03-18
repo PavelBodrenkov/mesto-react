@@ -42,5 +42,7 @@
 
 - npm start - открой проект в браузере
 
+## Фото проекта
+![image](https://user-images.githubusercontent.com/70709823/111629294-324ab100-8802-11eb-8fca-d7b7ec873acc.png)
 
 
